@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Postgres",
+        "connection_string": "postgresql://<USER>:<PASSWORD>@<HOST>:<PORT>/database"
+    },
+    {
+        "name": "MySql",
+        "connection_string": "mysql://<USER>:<PASSWORD>@<HOST>:<PORT>/database"
+    },
+    {
+        "name": "Sqlite",
+        "connection_string": "sqlite:////path/to/my/database.db"
+    }
+]

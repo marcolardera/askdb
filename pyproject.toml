@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "AskDB"
+description = "Universal tool for extracting informations from databases using LLMs"
+version = "0.1"
+requires-python = ">= 3.10"
+readme = "README.md"
+
+authors = [
+  {name = "Marco Lardera", email = "larderamarco@hotmail.com"}
+  ]
+
+dependencies = [
+    "openai",
+    "SQLAlchemy>=2",
+    "psycopg2-binary",
+    "PyMySQL",
+    "click",
+    "nicegui>=1.4.17",
+    "xdg-base-dirs"
+    ]
+
+[project.scripts]
+askdb = "askdb:main"
+askdb-cli = "cli:main"

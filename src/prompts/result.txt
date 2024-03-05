@@ -1,0 +1,8 @@
+Given a question, the corresponding SQL query and the result of the query, answer the question in natural language.
+
+QUESTION:
+{question}
+SQL QUERY:
+{query}
+RESULT:
+{result}
