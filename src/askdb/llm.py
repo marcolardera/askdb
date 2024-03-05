@@ -1,6 +1,6 @@
 import openai
 
-from database import Table, Database
+from askdb.database import Table, Database
 
 MODEL="gpt-4-turbo-preview"
 

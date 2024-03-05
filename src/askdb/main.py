@@ -4,19 +4,21 @@ Main GUI application
 
 import json
 import logging
+import os
 import sys
 
+from askdb.database import Database
+from askdb.llm import question_to_sql, sql_to_text
+from askdb.utils import get_config, get_prompt_template, query_result_to_table
 from nicegui import ui, run
-from database import Database
-from llm import question_to_sql, sql_to_text
 from pathlib import Path
-from utils import get_config, get_prompt_template, query_result_to_table
 from xdg_base_dirs import xdg_config_home
 
 CONFIG_DIR=Path(xdg_config_home(), "askdb")
 CONFIG_FILE="connections.json"
 
 logging.basicConfig(level="INFO", format="%(asctime)s - %(levelname)s - %(message)s")
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 try:
     config=get_config(CONFIG_DIR/CONFIG_FILE)
@@ -46,7 +48,7 @@ def main() -> None:
         result=db.execute_sql_query(sql)
 
         logging.info(result)
-        with open("src/prompts/result.txt") as file:
+        with open("prompts/result.txt") as file:
             prompt=file.read()
         answer=sql_to_text(prompt, question, sql, result.result)
         logging.info(answer)
@@ -70,7 +72,7 @@ def main() -> None:
 
     
     
-    ui.markdown("# Askdb GUI")
+    ui.markdown("# AskDB GUI")
 
     db_select=ui.select(
         options=list(db_options.keys()),

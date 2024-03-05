@@ -23,6 +23,12 @@ dependencies = [
     "xdg-base-dirs"
     ]
 
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+askdb = ["prompts/*"]
+
 [project.scripts]
-askdb = "askdb:main"
-askdb-cli = "cli:main"
+askdb = "askdb.main:main"
+askdb-cli = "askdb.cli:main"

@@ -1,6 +1,6 @@
 import json
 
-from database import QueryResult
+from askdb.database import QueryResult
 
 def get_config(file) -> list[dict]:
     with open(file) as jsonfile:
@@ -11,10 +11,10 @@ def get_prompt_template(connection_string: str) -> str:
     prefix=connection_string.split("://")[0]
     prefix=prefix.replace("postgres://", "postgresql://")
     try:
-        with open(f"src/prompts/{prefix}.txt") as file:
+        with open(f"prompts/{prefix}.txt") as file:
             prompt=file.read()
     except FileNotFoundError:
-        with open(f"src/prompts/general.txt") as file:
+        with open(f"prompts/general.txt") as file:
             prompt=file.read()
     
     return prompt

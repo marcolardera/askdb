@@ -5,18 +5,20 @@ Basic command line interface for testing purposes
 import click
 import json
 import logging
+import os
 import sys
 
-from database import Database
-from llm import question_to_sql, sql_to_text
+from askdb.database import Database
+from askdb.llm import question_to_sql, sql_to_text
+from askdb.utils import get_config, get_prompt_template
 from pathlib import Path
-from utils import get_config, get_prompt_template
 from xdg_base_dirs import xdg_config_home
 
 CONFIG_DIR=Path(xdg_config_home(), "askdb")
 CONFIG_FILE="connections.json"
 
 logging.basicConfig(level="INFO", format="%(asctime)s - %(levelname)s - %(message)s")
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 @click.command()
 @click.argument("question")  
@@ -55,7 +57,7 @@ def main(question, database) -> None:
     result=db.execute_sql_query(sql)
     logging.info(f"Result object = {result}")
 
-    with open("src/prompts/result.txt") as file:
+    with open("prompts/result.txt") as file:
         prompt=file.read()
 
     answer=sql_to_text(prompt, question, sql, result.result)
