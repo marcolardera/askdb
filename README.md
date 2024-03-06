@@ -71,7 +71,7 @@ Before using Askdb, you need to configure the connections to your databases. In 
 
 The `name` field is just the id of the connection, you can put whatever you want in it. The `connection_string` field follows the standard db connection string convention. In general, if the string is valid for SqlAlchemy, then it is valid for AskDB. You can have as many connections as you want inside this file.
 
-Keep in mind that the supported (and tested) databases are PostgreSQL, MySql and Sqlite but the tool shoud work even with other DBMS supported by SqlAlchemy, with the only difference being that in this case it would use a [generic prompt](src/prompts/general.txt) instead of a customised one.
+Keep in mind that the supported (and tested) databases are PostgreSQL, MySql and Sqlite but the tool should work even with other DBMS supported by SqlAlchemy, with the only difference being that in this case it would use a [generic prompt](src/prompts/general.txt) instead of a customised one.
 
 Once the connections have been configured, one final step remains. Since AskDB uses GPT-4 Turbo, an Openai API Key (with [GPT-4 access](https://help.openai.com/en/articles/7102672-how-can-i-access-gpt-4)) must be provided. To do so, simply set the environment variable `OPENAI_API_KEY`.
 
