@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "AskDB"
-description = "Universal tool for extracting informations from databases using LLMs"
+description = "Universal Q&A database tool"
 version = "0.1"
 requires-python = ">= 3.10"
 readme = "README.md"

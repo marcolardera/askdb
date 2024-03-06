@@ -1,6 +1,6 @@
 # AskDB
 
-Universal tool for extracting informations from databases using a Large Language Model
+Universal Q&A database tool
 
 ![intro screenshot](screenshots/screenshot-0.png)
 
