@@ -8,7 +8,7 @@ import os
 import sys
 
 from askdb.database import Database
-from askdb.llm import question_to_sql, sql_to_text
+from askdb.llm import get_openai_models, question_to_sql, sql_to_text
 from askdb.utils import get_config, get_prompt_template, query_result_to_table
 from nicegui import ui, run
 from pathlib import Path
@@ -16,6 +16,7 @@ from xdg_base_dirs import xdg_config_home
 
 CONFIG_DIR=Path(xdg_config_home(), "askdb")
 CONFIG_FILE="connections.json"
+DEFAULT_MODEL="gpt-4-turbo-preview"
 
 logging.basicConfig(level="INFO", format="%(asctime)s - %(levelname)s - %(message)s")
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -36,13 +37,14 @@ def main() -> None:
     def ask_db():
         spinner.set_visibility(True)
         connection_string=db_options[db_select.value]
+        model=model_select.value
         question=question_label.value
 
         db=Database(connection_string)
         metadata=db.extract_metadata()
 
         prompt=get_prompt_template(connection_string)
-        sql=question_to_sql(prompt, metadata, question)
+        sql=question_to_sql(prompt, metadata, question, model)
         logging.info(sql)
 
         result=db.execute_sql_query(sql)
@@ -50,7 +52,7 @@ def main() -> None:
         logging.info(result)
         with open("prompts/result.txt") as file:
             prompt=file.read()
-        answer=sql_to_text(prompt, question, sql, result.result)
+        answer=sql_to_text(prompt, question, sql, result.result, model)
         logging.info(answer)
 
         output.set_text(answer)
@@ -72,16 +74,23 @@ def main() -> None:
 
     
     
-    ui.markdown("# AskDB GUI")
-
-    db_select=ui.select(
-        options=list(db_options.keys()),
-        label="Select the database", 
-        value=list(db_options.keys())[0]).classes("w-1/3")
+    ui.markdown("# AskDB")
 
     with ui.row().classes("w-full no-wrap"):
-        question_label=ui.input("Ask a question").classes("w-4/5")
-        ui.button("Submit", on_click=ask_db_wrapper).classes("w-1/5")
+        db_select=ui.select(
+            options=list(db_options.keys()),
+            label="Select a database", 
+            value=list(db_options.keys())[0]).classes("w-1/3")
+        
+        openai_models=get_openai_models()
+        model_select=ui.select(
+            options=openai_models,
+            label="Select a model",
+            value=DEFAULT_MODEL if DEFAULT_MODEL in openai_models else openai_models()[0]
+        ).classes("w-1/3")
+
+    question_label=ui.input("Ask a question").classes("w-full")
+    ui.button("Submit", on_click=ask_db_wrapper).classes("w-1/5")
 
     ui.markdown("## Response:")
     spinner=ui.spinner(size="3em")
